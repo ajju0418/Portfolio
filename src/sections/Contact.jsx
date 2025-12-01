@@ -80,26 +80,29 @@ const Contact = () => {
 
                     {/* Contact Form */}
                     <div className="bg-white rounded-2xl p-10 shadow-xl border border-gray-100">
-                        <form className="space-y-6">
+                        <form action="https://api.web3forms.com/submit" method="POST" className="space-y-6">
+                            <input type="hidden" name="access_key" value="b2b0f142-f625-4b41-b1ac-37aa9eaafdc0" />
+                            <input type="hidden" name="subject" value="New Contact Form Submission from Portfolio" />
+                            <input type="hidden" name="from_name" value="Portfolio Contact Form" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
-                                    <input type="text" id="name" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="John Doe" />
+                                    <input type="text" id="name" name="name" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="John Doe" required />
                                 </div>
                                 <div>
                                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Your Email</label>
-                                    <input type="email" id="email" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="john@example.com" />
+                                    <input type="email" id="email" name="email" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="john@example.com" required />
                                 </div>
                             </div>
 
                             <div>
                                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                                <input type="text" id="subject" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="Project Inquiry" />
+                                <input type="text" id="subject" name="subject" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="Project Inquiry" required />
                             </div>
 
                             <div>
                                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                                <textarea id="message" rows="4" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="Tell me about your project..."></textarea>
+                                <textarea id="message" name="message" rows="4" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" placeholder="Tell me about your project..." required></textarea>
                             </div>
 
                             <button type="submit" className="w-full inline-flex items-center justify-center px-8 py-4 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg shadow-blue-200 group">
