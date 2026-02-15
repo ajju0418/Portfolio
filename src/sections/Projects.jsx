@@ -1,26 +1,26 @@
 import React from 'react';
-import { ExternalLink, Github, Code2, Layers } from 'lucide-react';
+import { ExternalLink, Github, Code2, Layers, BookOpen, Database } from 'lucide-react';
 
 const Projects = () => {
     const projects = [
         {
-            title: 'Ecommerce - Mystore',
-            description: 'Developed a full-stack e-commerce application with a responsive UI and backend microservices.',
-            tags: ['Angular', 'TypeScript', 'Java Spring Boot', 'MySQL'],
-            icon: <Code2 className="w-10 h-10 text-blue-600" />,
+            title: 'Library Management System',
+            description: 'Developed a full-stack system with secure authentication, role-based access control, and core features like book/member management and fine calculation.',
+            tags: ['Java', 'Spring Boot', 'React', 'MySQL', 'Docker', 'Microservices'],
+            icon: <BookOpen className="w-10 h-10 text-blue-600" />,
             gradient: 'from-blue-500 to-cyan-500',
-            features: ['Responsive UI', 'Backend Microservices', 'Full-stack Architecture'],
-            githubLink: 'https://github.com/ajju0418/Ecommerce-Project'
+            features: ['RBAC Authentication', 'Microservices Architecture', 'Docker Containerization'],
+            githubLink: 'https://github.com/ajju0418'
         },
         {
-            title: 'Reconnect',
-            subtitle: 'Supporting Dropout Students',
-            description: 'Created an app to offer a supportive community and resources, connecting dropouts with NGOs for career opportunities.',
-            tags: ['HTML', 'CSS', 'JavaScript'],
-            icon: <Layers className="w-10 h-10 text-purple-600" />,
+            title: 'Banking Management System',
+            subtitle: 'Core Banking Operations',
+            description: 'Designed a Java-based system handling account creation, deposits, withdrawals, and transaction history with data validation.',
+            tags: ['Core Java', 'SQL', 'JDBC'],
+            icon: <Database className="w-10 h-10 text-purple-600" />,
             gradient: 'from-purple-500 to-pink-500',
-            features: ['Community Support', 'NGO Connection', 'Resource Hub'],
-            githubLink: '#'
+            features: ['Transaction Management', 'Data Validation', 'Error Handling'],
+            githubLink: 'https://github.com/ajju0418'
         }
     ];
 

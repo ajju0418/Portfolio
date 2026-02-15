@@ -3,6 +3,7 @@ import { Award, Trophy, BookOpen } from 'lucide-react';
 
 const Certifications = () => {
     const certifications = [
+        'GitHub Foundations (GH-900)',
         'Programming in Java - NPTEL',
         'Introduction to Cybersecurity - CISCO',
         'Java language features - INFOSYS SPRINGBOARD',
