@@ -114,7 +114,7 @@ const Hero = () => {
                             { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg', category: 'Frontend' },
                             { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg', category: 'Backend' },
                             { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg', category: 'Backend' },
-                            { name: 'C', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg', category: 'Language' },
+                            { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg', category: 'Database' },
                             { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg', category: 'Tools' },
                             { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg', category: 'Database' },
                             { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg', category: 'Tools' },
@@ -170,7 +170,7 @@ const Hero = () => {
                                 icon: <Database className="w-8 h-8 text-white" />,
                                 color: 'bg-blue-500',
                                 description: 'Developing robust server-side applications and microservices.',
-                                skills: ['Java', 'Spring', 'Spring Boot', 'MySQL', 'REST APIs']
+                                skills: ['Java', 'Spring', 'Spring Boot', 'MySQL', 'MongoDB', 'REST APIs']
                             },
                             {
                                 title: 'Tools & Problem Solving',

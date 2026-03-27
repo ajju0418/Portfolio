@@ -1,8 +1,28 @@
 import React from 'react';
-import { ExternalLink, Github, Code2, Layers, BookOpen, Database } from 'lucide-react';
+import { ExternalLink, Github, Code2, Layers, BookOpen, Database, ShoppingCart, Zap } from 'lucide-react';
 
 const Projects = () => {
     const projects = [
+        {
+            title: 'NEXURA',
+            subtitle: 'Full-Stack TypeScript Application',
+            description: 'A modern full-stack application built with TypeScript, featuring a robust backend architecture and responsive frontend interface. Demonstrates clean code practices and modern web development patterns.',
+            tags: ['TypeScript', 'Full-Stack', 'Modern Web', 'REST API'],
+            icon: <Zap className="w-10 h-10 text-yellow-600" />,
+            gradient: 'from-yellow-500 to-orange-500',
+            features: ['TypeScript-First Approach', 'Frontend & Backend Integration', 'Modern Architecture'],
+            githubLink: 'https://github.com/ajju0418/NEXURA'
+        },
+        {
+            title: 'E-commerce MyStore',
+            subtitle: 'Full-Stack Microservices Platform',
+            description: 'Built a complete e-commerce application with Spring Boot microservices backend and Angular frontend. Features include API Gateway, Eureka service discovery, and multiple microservices for user, product, cart, order, and payment management.',
+            tags: ['Spring Boot', 'Angular', 'Microservices', 'Spring Cloud', 'JWT', 'TypeScript', 'Spring Security'],
+            icon: <ShoppingCart className="w-10 h-10 text-green-600" />,
+            gradient: 'from-green-500 to-emerald-500',
+            features: ['8 Microservices Architecture', 'API Gateway & Service Discovery', 'Admin Panel & Payment Processing'],
+            githubLink: 'https://github.com/ajju0418/Ecommerce_Mystore'
+        },
         {
             title: 'Library Management System',
             description: 'Developed a full-stack system with secure authentication, role-based access control, and core features like book/member management and fine calculation.',
@@ -36,7 +56,7 @@ const Projects = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     {projects.map((project, index) => (
                         <div key={index} className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
                             {/* Gradient Header */}
