@@ -6,9 +6,79 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
-    @apply antialiased;
+    @apply antialiased bg-ink-900 text-slate-300 font-sans;
+    background-image:
+      radial-gradient(60rem 60rem at 75% -10%, rgba(99, 102, 241, 0.12), transparent 60%),
+      radial-gradient(50rem 50rem at -10% 20%, rgba(139, 92, 246, 0.10), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.35);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* Glass surface used across cards / nav */
+  .glass {
+    @apply bg-white/[0.03] border border-white/10 backdrop-blur-xl;
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05];
+  }
+
+  /* Cursor-following spotlight glow (driven by --mx/--my from SpotlightCard) */
+  .spotlight-card {
+    @apply relative;
+  }
+  .spotlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      300px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(129, 140, 248, 0.16),
+      transparent 65%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Eyebrow label — mono, spaced */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.25em] text-accent-soft;
+  }
+
+  /* Accent gradient text — used sparingly for names/keywords */
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-soft via-accent to-accent-glow bg-clip-text text-transparent;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-semibold text-white
+           bg-accent shadow-glow transition-all duration-300 hover:bg-accent-soft hover:-translate-y-0.5;
+  }
+
+  /* Secondary / ghost button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-semibold text-slate-200
+           border border-white/15 bg-white/[0.03] transition-all duration-300
+           hover:border-white/30 hover:bg-white/[0.06] hover:-translate-y-0.5;
+  }
+
+  .section-shell {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 }
 
@@ -16,18 +86,26 @@
 ::-webkit-scrollbar {
   width: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0a0e1a;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #2563eb, #7c3aed);
+  background: #27324a;
   border-radius: 5px;
+  border: 2px solid #0a0e1a;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #1d4ed8, #6d28d9);
+  background: #6366f1;
 }
 
-
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

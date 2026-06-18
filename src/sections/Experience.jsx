@@ -1,105 +1,94 @@
 import React from 'react';
 import { Briefcase, Calendar } from 'lucide-react';
+import Reveal from '../components/Reveal';
+
+const roles = [
+    {
+        title: 'Programmer Analyst Trainee',
+        company: 'Cognizant Technology Solutions',
+        period: 'Oct 2025 - Present',
+        current: true,
+        description:
+            'Working on the Elsevier research publishing platform with a focus on authentication and authorization. Contributing to secure backend development, testing, and code reviews in an Agile environment.',
+        skills: ['Java', 'Spring Boot', 'Agile', 'Backend', 'Security'],
+    },
+    {
+        title: 'Java Full Stack Intern',
+        company: 'Cognizant Technology Solutions',
+        period: 'July 2025 - Sept 2025',
+        current: false,
+        description:
+            'Developed a Library Management System using Java and Spring Boot microservices. Implemented Spring Security with a React frontend and designed RESTful APIs for book management.',
+        skills: ['Java', 'Spring Boot', 'React', 'Microservices', 'Docker', 'REST APIs'],
+    },
+];
 
 const Experience = () => {
     return (
-        <section id="experience" className="py-20 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                        Professional <span className="text-blue-600">Experience</span>
+        <section id="experience" className="py-20">
+            <div className="section-shell">
+                <Reveal className="text-center mb-16">
+                    <span className="eyebrow">Career</span>
+                    <h2 className="font-display text-4xl font-bold text-white mt-3">
+                        Professional <span className="text-gradient">Experience</span>
                     </h2>
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                        Building enterprise-grade solutions and delivering value to clients.
+                    <p className="text-lg text-slate-400 mt-3 max-w-2xl mx-auto">
+                        Building enterprise-grade solutions and delivering client value.
                     </p>
-                </div>
+                </Reveal>
 
-                <div className="max-w-4xl mx-auto relative">
-                    {/* Vertical Line */}
-                    <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-600 to-blue-300 rounded-full opacity-20"></div>
+                <div className="max-w-3xl mx-auto relative">
+                    {/* Vertical line */}
+                    <div className="absolute left-4 md:left-5 top-2 bottom-2 w-px bg-gradient-to-b from-accent/60 via-accent/30 to-transparent" />
 
-                    {/* Experience Item 1 - Programmer Analyst Trainee */}
-                    <div className="relative z-10 mb-12">
-                        <div className="flex flex-col md:flex-row items-center justify-between w-full">
+                    <div className="space-y-8">
+                        {roles.map((role, i) => (
+                            <Reveal key={role.title} delay={i * 0.1} direction="left">
+                                <div className="relative pl-14 md:pl-16">
+                                    {/* Node */}
+                                    <div className="absolute left-0 top-1.5 flex items-center justify-center">
+                                        <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-ink-800 border border-accent/40 shadow-glow">
+                                            {role.current && (
+                                                <span className="absolute inline-flex h-full w-full rounded-full bg-accent/30 animate-pulse-ring" />
+                                            )}
+                                            <Briefcase className="w-4 h-4 text-accent-soft relative z-10" />
+                                        </span>
+                                    </div>
 
-                            {/* Date (Left on Desktop) */}
-                            <div className="order-1 md:w-5/12 text-left md:text-right mb-4 md:mb-0">
-                                <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-bold text-sm shadow-sm border border-blue-100">
-                                    <Calendar className="w-4 h-4 mr-2" />
-                                    Oct 2025 - Present
-                                </div>
-                            </div>
-
-                            {/* Center Dot */}
-                            <div className="order-1 md:w-2/12 flex justify-center relative my-4 md:my-0">
-                                <div className="w-10 h-10 bg-blue-600 rounded-full border-4 border-white shadow-lg flex items-center justify-center z-20">
-                                    <Briefcase className="w-5 h-5 text-white" />
-                                </div>
-                            </div>
-
-                            {/* Content Card (Right on Desktop) */}
-                            <div className="order-1 md:w-5/12 w-full">
-                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">Programmer Analyst Trainee</h3>
-                                    <p className="text-base font-semibold text-gray-600 mb-4">Cognizant Technology Solutions</p>
-
-                                    <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                                        Working on Elsevier research publishing platform focusing on authentication and authorization.
-                                        Contributing to secure backend development, testing, and code reviews in an Agile environment.
-                                    </p>
-
-                                    <div className="flex flex-wrap gap-2">
-                                        {['Java', 'Spring Boot', 'Agile', 'Backend Development', 'Security'].map((skill) => (
-                                            <span key={skill} className="px-3 py-1 rounded-full bg-gray-50 text-gray-600 text-xs font-medium border border-gray-100 group-hover:border-blue-100 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all duration-300">
-                                                {skill}
+                                    <div className="glass glass-hover rounded-2xl p-6 group">
+                                        <div className="flex flex-wrap items-center gap-3 mb-3">
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent-soft text-xs font-mono">
+                                                <Calendar className="w-3.5 h-3.5" />
+                                                {role.period}
                                             </span>
-                                        ))}
+                                            {role.current && (
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-xs font-medium">
+                                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                                                    Current
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <h3 className="text-xl font-display font-bold text-white group-hover:text-accent-soft transition-colors">
+                                            {role.title}
+                                        </h3>
+                                        <p className="text-sm font-medium text-slate-400 mb-3">{role.company}</p>
+                                        <p className="text-slate-400 text-sm leading-relaxed mb-4">{role.description}</p>
+
+                                        <div className="flex flex-wrap gap-2">
+                                            {role.skills.map((skill) => (
+                                                <span
+                                                    key={skill}
+                                                    className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs font-medium"
+                                                >
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Experience Item 2 - Java Full Stack Intern */}
-                    <div className="relative z-10 mb-12">
-                        <div className="flex flex-col md:flex-row items-center justify-between w-full">
-
-                            {/* Content Card (Left on Desktop) */}
-                            <div className="order-1 md:w-5/12 w-full md:text-right">
-                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">Java Full Stack Intern</h3>
-                                    <p className="text-base font-semibold text-gray-600 mb-4">Cognizant Technology Solutions</p>
-
-                                    <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                                        Developed a Library Management System using Java and Spring Boot microservices.
-                                        Implemented Spring Security with a React frontend and designed RESTful APIs for book management.
-                                    </p>
-
-                                    <div className="flex flex-wrap gap-2 md:justify-end">
-                                        {['Java', 'Spring Boot', 'React', 'Microservices', 'Docker', 'REST APIs'].map((skill) => (
-                                            <span key={skill} className="px-3 py-1 rounded-full bg-gray-50 text-gray-600 text-xs font-medium border border-gray-100 group-hover:border-blue-100 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all duration-300">
-                                                {skill}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Center Dot */}
-                            <div className="order-1 md:w-2/12 flex justify-center relative my-4 md:my-0">
-                                <div className="w-10 h-10 bg-white rounded-full border-4 border-blue-600 shadow-lg flex items-center justify-center z-20">
-                                    <Briefcase className="w-5 h-5 text-blue-600" />
-                                </div>
-                            </div>
-
-                            {/* Date (Right on Desktop) */}
-                            <div className="order-1 md:w-5/12 text-left mb-4 md:mb-0">
-                                <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-bold text-sm shadow-sm border border-blue-100">
-                                    <Calendar className="w-4 h-4 mr-2" />
-                                    July 2025 - Sept 2025
-                                </div>
-                            </div>
-                        </div>
+                            </Reveal>
+                        ))}
                     </div>
                 </div>
             </div>

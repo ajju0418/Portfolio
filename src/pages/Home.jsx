@@ -1,12 +1,11 @@
 import React from 'react';
 import Hero from '../sections/Hero';
+import PageWrapper from '../components/PageWrapper';
 
-const Home = () => {
-    return (
-        <>
-            <Hero />
-        </>
-    );
-};
+const Home = () => (
+    <PageWrapper>
+        <Hero />
+    </PageWrapper>
+);
 
 export default Home;

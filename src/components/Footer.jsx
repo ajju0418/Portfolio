@@ -2,50 +2,64 @@ import React from 'react';
 import { Github, Linkedin, Mail, Code2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const socials = [
+    { Icon: Github, href: 'https://github.com/ajju0418', label: 'GitHub', hover: 'hover:bg-white hover:text-ink-900' },
+    { Icon: Linkedin, href: 'https://www.linkedin.com/in/ajay-b-9974b0237', label: 'LinkedIn', hover: 'hover:bg-accent hover:text-white' },
+    { Icon: Code2, href: 'https://leetcode.com/u/ajju17/', label: 'LeetCode', hover: 'hover:bg-amber-500 hover:text-white' },
+    { Icon: Mail, href: 'mailto:ajaybalu9481@gmail.com', label: 'Email', hover: 'hover:bg-rose-500 hover:text-white' },
+];
+
+const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Experience', path: '/experience' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Contact', path: '/contact' },
+];
+
 const Footer = () => {
-  return (
-    <footer className="bg-white border-t border-gray-100 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-center space-y-8">
+    return (
+        <footer className="border-t border-white/10 bg-ink-950/40 backdrop-blur-sm">
+            <div className="section-shell py-12">
+                <div className="flex flex-col items-center gap-7">
+                    <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                to={link.path}
+                                className="text-sm text-slate-400 hover:text-white transition-colors"
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
+                    </nav>
 
-          {/* Social Icons - Premium & Large */}
-          <div className="flex items-center space-x-8">
-            <a href="https://github.com/ajju0418" target="_blank" rel="noopener noreferrer" className="group">
-              <div className="p-3 rounded-full bg-gray-50 text-gray-600 group-hover:bg-gray-900 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-lg transform group-hover:-translate-y-1">
-                <Github className="w-6 h-6" />
-              </div>
-            </a>
-            <a href="https://www.linkedin.com/in/ajay-b-9974b0237" target="_blank" rel="noopener noreferrer" className="group">
-              <div className="p-3 rounded-full bg-gray-50 text-gray-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-lg transform group-hover:-translate-y-1">
-                <Linkedin className="w-6 h-6" />
-              </div>
-            </a>
-            <a href="https://leetcode.com/u/ajju17/" target="_blank" rel="noopener noreferrer" className="group">
-              <div className="p-3 rounded-full bg-gray-50 text-gray-600 group-hover:bg-yellow-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-lg transform group-hover:-translate-y-1">
-                <Code2 className="w-6 h-6" />
-              </div>
-            </a>
-            <a href="mailto:ajaybalu9481@gmail.com" className="group">
-              <div className="p-3 rounded-full bg-gray-50 text-gray-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-lg transform group-hover:-translate-y-1">
-                <Mail className="w-6 h-6" />
-              </div>
-            </a>
-          </div>
+                    <div className="flex items-center gap-3">
+                        {socials.map(({ Icon, href, label, hover }) => (
+                            <a
+                                key={label}
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={label}
+                                className={`p-3 rounded-full bg-white/5 border border-white/10 text-slate-300 transition-all duration-300 hover:-translate-y-1 ${hover}`}
+                            >
+                                <Icon className="w-5 h-5" />
+                            </a>
+                        ))}
+                    </div>
 
-          {/* Signature */}
-          <div className="text-center">
-            <p className="text-gray-500 font-medium text-sm tracking-wide">
-              Designed & Built by <span className="text-gray-900 font-bold">Ajay B</span>
-            </p>
-            <p className="text-gray-400 text-xs mt-2">
-              &copy; {new Date().getFullYear()} All rights reserved.
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </footer>
-  );
+                    <div className="text-center">
+                        <p className="text-sm text-slate-500">
+                            Designed & built by <span className="text-slate-200 font-semibold">Ajay B</span>
+                        </p>
+                        <p className="text-xs text-slate-600 mt-1.5">
+                            &copy; {new Date().getFullYear()} All rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    );
 };
 
 export default Footer;

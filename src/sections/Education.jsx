@@ -1,84 +1,76 @@
 import React from 'react';
 import { GraduationCap } from 'lucide-react';
+import Reveal from '../components/Reveal';
+
+const education = [
+    {
+        degree: 'B.Tech, Computer Science and Business Systems',
+        school: 'Sri Krishna College of Engineering and Technology',
+        location: 'Coimbatore, Tamil Nadu',
+        period: 'Nov 2021 - Apr 2025',
+        note: null,
+    },
+    {
+        degree: 'Higher Secondary',
+        school: 'Vidyaa Vikas Matric Higher Secondary School',
+        location: 'Coimbatore',
+        period: 'Jun 2019 - May 2020',
+        note: null,
+    },
+    {
+        degree: 'Secondary',
+        school: 'Vidyaa Vikas',
+        location: 'Coimbatore',
+        period: '2017 - 2019',
+        note: 'Score: 89.5%',
+    },
+];
 
 const Education = () => {
     return (
-        <section id="education" className="py-20 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                        Educational <span className="text-blue-600">Background</span>
+        <section id="education" className="py-20">
+            <div className="section-shell">
+                <Reveal className="text-center mb-16">
+                    <span className="eyebrow">Academics</span>
+                    <h2 className="font-display text-4xl font-bold text-white mt-3">
+                        Educational <span className="text-gradient">Background</span>
                     </h2>
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                        Strong foundation in Computer Science and Business Systems.
+                    <p className="text-lg text-slate-400 mt-3 max-w-2xl mx-auto">
+                        A strong foundation in Computer Science and Business Systems.
                     </p>
-                </div>
+                </Reveal>
 
-                <div className="max-w-4xl mx-auto relative">
-                    {/* Timeline Line */}
-                    <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-1 bg-blue-100"></div>
+                <div className="max-w-3xl mx-auto relative">
+                    <div className="absolute left-4 md:left-5 top-2 bottom-2 w-px bg-gradient-to-b from-accent/60 via-accent/30 to-transparent" />
 
-                    {/* Education Item 1 */}
-                    <div className="relative z-10 mb-12">
-                        <div className="flex flex-col md:flex-row items-center justify-between w-full">
-                            <div className="order-1 md:w-5/12"></div>
-                            <div className="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
-                                <div className="mx-auto font-semibold text-lg text-white"></div>
-                            </div>
-                            <div className="order-1 md:w-5/12 w-full mt-4 md:mt-0 px-4">
-                                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="font-bold text-xl text-gray-900">B.Tech Computer Science and Business Systems</h3>
-                                        <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">Nov 2021 - April 2025</span>
+                    <div className="space-y-8">
+                        {education.map((item, i) => (
+                            <Reveal key={item.degree} delay={i * 0.1} direction="left">
+                                <div className="relative pl-14 md:pl-16">
+                                    <div className="absolute left-0 top-1.5">
+                                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink-800 border border-accent/40 shadow-glow">
+                                            <GraduationCap className="w-4 h-4 text-accent-soft" />
+                                        </span>
                                     </div>
-                                    <p className="text-gray-600 font-medium">Sri Krishna College of Engineering and Technology</p>
-                                    <p className="text-gray-500 text-sm mt-1">Coimbatore, Tamil Nadu</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* Education Item 2 */}
-                    <div className="relative z-10 mb-12">
-                        <div className="flex flex-col md:flex-row items-center justify-between w-full">
-                            <div className="order-1 md:w-5/12 w-full mb-4 md:mb-0 px-4 md:text-right">
-                                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                                    <div className="flex justify-between items-start mb-2 md:flex-row-reverse">
-                                        <h3 className="font-bold text-xl text-gray-900">Higher Secondary</h3>
-                                        <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">Jun 2019 - May 2020</span>
-                                    </div>
-                                    <p className="text-gray-600 font-medium">Vidyaa Vikas Matric Higher Secondary School</p>
-                                    <p className="text-gray-500 text-sm mt-1">Coimbatore</p>
-                                </div>
-                            </div>
-                            <div className="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
-                                <div className="mx-auto font-semibold text-lg text-white"></div>
-                            </div>
-                            <div className="order-1 md:w-5/12"></div>
-                        </div>
-                    </div>
-
-                    {/* Education Item 3 */}
-                    <div className="relative z-10">
-                        <div className="flex flex-col md:flex-row items-center justify-between w-full">
-                            <div className="order-1 md:w-5/12"></div>
-                            <div className="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
-                                <div className="mx-auto font-semibold text-lg text-white"></div>
-                            </div>
-                            <div className="order-1 md:w-5/12 w-full mt-4 md:mt-0 px-4">
-                                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="font-bold text-xl text-gray-900">Secondary</h3>
-                                        <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">2017 - 2019</span>
-                                    </div>
-                                    <p className="text-gray-600 font-medium">Vidyaa Vikas</p>
-                                    <p className="text-gray-500 text-sm mt-1">Coimbatore</p>
-                                    <div className="mt-4 flex items-center text-blue-600 font-semibold">
-                                        Score: 89.5%
+                                    <div className="glass glass-hover rounded-2xl p-6 group">
+                                        <div className="flex flex-wrap items-start justify-between gap-3 mb-1">
+                                            <h3 className="text-lg font-display font-bold text-white group-hover:text-accent-soft transition-colors">
+                                                {item.degree}
+                                            </h3>
+                                            <span className="px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent-soft text-xs font-mono whitespace-nowrap">
+                                                {item.period}
+                                            </span>
+                                        </div>
+                                        <p className="text-slate-300 font-medium text-sm">{item.school}</p>
+                                        <p className="text-slate-500 text-sm mt-0.5">{item.location}</p>
+                                        {item.note && (
+                                            <p className="mt-3 inline-flex text-emerald-300 text-sm font-semibold">{item.note}</p>
+                                        )}
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </Reveal>
+                        ))}
                     </div>
                 </div>
             </div>

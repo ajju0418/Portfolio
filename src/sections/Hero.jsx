@@ -1,205 +1,323 @@
-import React from 'react';
-import { ArrowRight, Github, Linkedin, Mail, Code2, Database, Terminal } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Github, Linkedin, Mail, Download, Code2, Database, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import profileImage from '../assets/LINKED N.png';
 import cognizantLogo from '../assets/cognizant.jpeg';
+import Reveal from '../components/Reveal';
+import Typewriter from '../components/Typewriter';
+import SpotlightCard from '../components/SpotlightCard';
+import Counter from '../components/Counter';
+import Magnetic from '../components/Magnetic';
+
+const roles = [
+    'Software Engineer',
+    'Backend Developer',
+    'Full Stack Developer',
+    'Java & Spring Boot Dev',
+    'API Architect',
+    'Problem Solver',
+];
+
+const EASE = [0.22, 1, 0.36, 1];
+
+// Choreographed entrance: children cascade in one after another
+const introContainer = {
+    hidden: {},
+    show: {
+        transition: { staggerChildren: 0.12, delayChildren: 0.15 },
+    },
+};
+
+const introItem = {
+    hidden: { opacity: 0, y: 22, filter: 'blur(6px)' },
+    show: {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        transition: { duration: 0.7, ease: EASE },
+    },
+};
+
+const imageReveal = {
+    hidden: { opacity: 0, scale: 0.9, y: 16, filter: 'blur(8px)' },
+    show: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        transition: { duration: 0.9, ease: EASE },
+    },
+};
+
+const techStack = [
+    { name: 'Angular', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg', category: 'Frontend' },
+    { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg', category: 'Frontend' },
+    { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg', category: 'Backend' },
+    { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg', category: 'Backend' },
+    { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg', category: 'Database' },
+    { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg', category: 'Tools' },
+    { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg', category: 'Database' },
+    { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg', category: 'Tools' },
+    { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg', category: 'DevOps' },
+    { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', category: 'Cloud' },
+];
+
+const expertise = [
+    {
+        title: 'Frontend Development',
+        icon: Code2,
+        description: 'Building responsive, performant user interfaces with modern frameworks.',
+        skills: ['Angular', 'JavaScript', 'TypeScript', 'HTML5', 'CSS3', 'Bootstrap'],
+    },
+    {
+        title: 'Backend Development',
+        icon: Database,
+        description: 'Developing robust server-side applications and microservices.',
+        skills: ['Java', 'Spring', 'Spring Boot', 'MySQL', 'MongoDB', 'REST APIs'],
+    },
+    {
+        title: 'Tools & Problem Solving',
+        icon: Terminal,
+        description: 'Development tooling and algorithmic problem solving.',
+        skills: ['Git', 'VS Code', 'Postman', 'LeetCode', 'Data Structures', 'Algorithms'],
+    },
+];
+
+const socials = [
+    { Icon: Github, href: 'https://github.com/ajju0418', label: 'GitHub' },
+    { Icon: Linkedin, href: 'https://www.linkedin.com/in/ajay-b-9974b0237', label: 'LinkedIn' },
+    { Icon: Mail, href: 'mailto:ajaybalu9481@gmail.com', label: 'Email' },
+];
+
+const techCategories = ['All', ...Array.from(new Set(techStack.map((t) => t.category)))];
 
 const Hero = () => {
+    const [activeCat, setActiveCat] = useState('All');
+    const filteredTech = activeCat === 'All' ? techStack : techStack.filter((t) => t.category === activeCat);
+
     return (
-        <section id="home" className="min-h-screen pt-32 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                    
-                    {/* Left Side - Profile Picture with Work Info */}
-                    <div className="flex flex-col items-center lg:items-end space-y-6 lg:pr-8">
-                        <div className="relative w-80 h-80 rounded-2xl overflow-hidden border-4 border-white shadow-2xl">
-                            <img 
-                                src={profileImage} 
-                                alt="Ajay - Software Engineer" 
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        
-                        {/* Work Info Card */}
-                        <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-100 w-80">
+        <section id="home" className="relative pt-32 pb-10">
+            <div className="section-shell w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+                    {/* Left — Profile */}
+                    <motion.div
+                        className="flex flex-col items-center lg:items-end gap-6 order-2 lg:order-1"
+                        variants={introContainer}
+                        initial="hidden"
+                        animate="show"
+                    >
+                        <motion.div className="relative" variants={imageReveal}>
+                            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-accent/30 to-accent-glow/20 blur-2xl animate-float-slow" />
+                            <div className="relative w-72 h-72 sm:w-80 sm:h-80 rounded-3xl overflow-hidden border border-white/15 shadow-card">
+                                <img src={profileImage} alt="Ajay B — Full Stack Developer" className="w-full h-full object-cover" />
+                            </div>
+                        </motion.div>
+
+                        <motion.div className="glass rounded-2xl p-5 w-72 sm:w-80" variants={introItem}>
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-gray-200 shadow-sm">
-                                    <img 
-                                        src={cognizantLogo} 
-                                        alt="Cognizant" 
-                                        className="w-8 h-8 object-contain"
-                                    />
+                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shrink-0">
+                                    <img src={cognizantLogo} alt="Cognizant" className="w-8 h-8 object-contain" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-gray-900">Programmer Analyst Trainee</h3>
-                                    <p className="text-gray-600 text-sm">Cognizant Technology Solutions</p>
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                                        <span className="text-xs text-green-600 font-medium">Currently</span>
+                                    <h3 className="font-semibold text-white text-sm">Programmer Analyst Trainee</h3>
+                                    <p className="text-slate-400 text-xs">Cognizant Technology Solutions</p>
+                                    <div className="flex items-center gap-2 mt-1.5">
+                                        <span className="relative flex h-2 w-2">
+                                            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 animate-pulse-ring" />
+                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                                        </span>
+                                        <span className="text-xs text-emerald-300 font-medium">Currently</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </motion.div>
+                    </motion.div>
 
-                    {/* Right Side - Content */}
-                    <div className="space-y-6">
+                    {/* Right — Content */}
+                    <motion.div
+                        className="space-y-6 order-1 lg:order-2"
+                        variants={introContainer}
+                        initial="hidden"
+                        animate="show"
+                    >
+                        <motion.span variants={introItem} className="eyebrow block">Available for opportunities</motion.span>
 
-                        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-                            Hi, I'm <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Ajay</span>
-                            <br />
-                            <span className="text-3xl md:text-4xl text-gray-600">Full Stack Developer</span>
-                        </h1>
+                        <motion.h1 variants={introItem} className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1]">
+                            Hi, I'm <span className="text-gradient">Ajay</span>
+                        </motion.h1>
 
-                        <p className="text-lg text-gray-600 leading-relaxed">
-                            Building scalable enterprise solutions at Cognizant. Specialized in
-                            <span className="font-semibold text-gray-900"> Angular</span>,
-                            <span className="font-semibold text-gray-900"> Java</span>, and
-                            <span className="font-semibold text-gray-900"> Spring Boot</span>.
-                            Passionate about clean code, performance optimization, and modern web architecture.
-                        </p>
+                        <motion.div variants={introItem} className="flex items-baseline gap-2 text-2xl sm:text-3xl lg:text-4xl font-display font-semibold min-h-[2.75rem] sm:min-h-[3.25rem] lg:min-h-[3.75rem]">
+                            <span className="text-slate-400">I'm a</span>
+                            <Typewriter
+                                words={roles}
+                                className="text-gradient"
+                                cursorClassName="bg-accent-soft"
+                            />
+                        </motion.div>
 
-                        <div className="flex flex-wrap gap-4">
-                            <Link to="/projects" className="inline-flex items-center px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg">
-                                View Projects
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                            <Link to="/contact" className="inline-flex items-center px-6 py-3 rounded-lg bg-white text-gray-700 font-semibold border-2 border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-all duration-300 shadow-sm">
-                                Let's Connect
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                        </div>
+                        <motion.p variants={introItem} className="text-base sm:text-lg text-slate-400 leading-relaxed max-w-xl">
+                            Building secure, enterprise-grade solutions at Cognizant. Specialized in{' '}
+                            <span className="text-slate-200 font-medium">Angular</span>,{' '}
+                            <span className="text-slate-200 font-medium">Java</span>, and{' '}
+                            <span className="text-slate-200 font-medium">Spring Boot</span> — with a focus on clean
+                            code, performance, and modern architecture.
+                        </motion.p>
 
-                        <div className="flex flex-wrap items-center gap-3">
-                            <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full border border-gray-200 shadow-sm">
-                                <span className="text-sm">📍</span>
-                                <span className="font-medium text-gray-700 text-sm">Chennai, India</span>
+                        <motion.div variants={introItem} className="flex flex-wrap gap-3">
+                            <Magnetic>
+                                <Link to="/projects" className="btn-primary group">
+                                    View Projects
+                                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                </Link>
+                            </Magnetic>
+                            <Magnetic>
+                                <a href="/Ajay_B_Resume.pdf" download className="btn-ghost">
+                                    <Download className="h-4 w-4" />
+                                    Résumé
+                                </a>
+                            </Magnetic>
+                        </motion.div>
+
+                        <motion.div variants={introItem} className="flex flex-wrap items-center gap-3 pt-1">
+                            <div className="flex items-center gap-2 px-4 py-2 glass rounded-full text-sm">
+                                <span>📍</span>
+                                <span className="text-slate-300 font-medium">Chennai, India</span>
                             </div>
-                            <div className="flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full border border-green-200 shadow-sm">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                </span>
-                                <span className="font-medium text-green-700 text-sm">Open to opportunities</span>
+                            <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 text-sm">
+                                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                                <span className="text-emerald-300 font-medium">Open to opportunities</span>
                             </div>
-                        </div>
-                        
-                        {/* Stats Cards */}
-                        <div className="grid grid-cols-3 gap-4 mt-8">
-                            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center border border-gray-100 shadow-sm">
-                                <div className="text-2xl font-bold text-blue-600">Fresher</div>
-                                <div className="text-xs text-gray-600">Experience</div>
+                            <div className="flex items-center gap-1">
+                                {socials.map(({ Icon, href, label }) => (
+                                    <a
+                                        key={label}
+                                        href={href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={label}
+                                        className="p-2.5 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                                    >
+                                        <Icon className="h-5 w-5" />
+                                    </a>
+                                ))}
                             </div>
-                            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center border border-gray-100 shadow-sm">
-                                <div className="text-2xl font-bold text-purple-600">10+</div>
-                                <div className="text-xs text-gray-600">Technologies</div>
-                            </div>
-                            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center border border-gray-100 shadow-sm">
-                                <div className="text-2xl font-bold text-green-600">5+</div>
-                                <div className="text-xs text-gray-600">Projects</div>
-                            </div>
-                        </div>
-                    </div>
+                        </motion.div>
+
+                        {/* Stats */}
+                        <motion.div variants={introItem} className="grid grid-cols-3 gap-3 pt-2 max-w-md">
+                            {[
+                                { value: '10+', label: 'Technologies' },
+                                { value: '5+', label: 'Projects' },
+                                { value: '6', label: 'Certifications' },
+                            ].map((stat) => (
+                                <div key={stat.label} className="glass glass-hover rounded-xl p-4 text-center">
+                                    <Counter value={stat.value} className="block text-2xl font-display font-bold text-gradient" />
+                                    <div className="text-xs text-slate-400 mt-0.5">{stat.label}</div>
+                                </div>
+                            ))}
+                        </motion.div>
+                    </motion.div>
                 </div>
 
-                {/* Tech Stack Section */}
-                <div className="mt-20 pt-16">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Tech Stack</h2>
-                        <p className="text-lg text-gray-600">Technologies I work with</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-                        {[
-                            { name: 'Angular', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg', category: 'Frontend' },
-                            { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg', category: 'Frontend' },
-                            { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg', category: 'Backend' },
-                            { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg', category: 'Backend' },
-                            { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg', category: 'Database' },
-                            { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg', category: 'Tools' },
-                            { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg', category: 'Database' },
-                            { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg', category: 'Tools' },
-                            { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg', category: 'DevOps' },
-                            { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', category: 'Cloud' }
-                        ].map((tech) => (
-                            <div key={tech.name} className="group">
-                                <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all duration-300">
-                                    <div className="flex flex-col items-center text-center">
-                                        <img 
-                                            src={tech.icon} 
-                                            alt={tech.name} 
-                                            className="w-12 h-12 mb-3" 
+                {/* Tech Stack */}
+                <div className="mt-28">
+                    <Reveal className="text-center mb-8">
+                        <span className="eyebrow">Toolbox</span>
+                        <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mt-3">Tech Stack</h2>
+                        <p className="text-slate-400 mt-2">Technologies I work with daily</p>
+                    </Reveal>
+
+                    {/* Category filter chips */}
+                    <Reveal className="flex flex-wrap justify-center gap-2 mb-10">
+                        {techCategories.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setActiveCat(cat)}
+                                className={`relative px-4 py-1.5 rounded-full text-xs font-medium transition-colors duration-300 ${
+                                    activeCat === cat ? 'text-white' : 'text-slate-400 hover:text-white'
+                                }`}
+                            >
+                                {activeCat === cat && (
+                                    <motion.span
+                                        layoutId="tech-filter-active"
+                                        className="absolute inset-0 rounded-full bg-accent/90 shadow-glow"
+                                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                                    />
+                                )}
+                                <span className="relative z-10">{cat}</span>
+                            </button>
+                        ))}
+                    </Reveal>
+
+                    <motion.div layout className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <AnimatePresence mode="popLayout">
+                            {filteredTech.map((tech) => (
+                                <motion.div
+                                    key={tech.name}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.85 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.85 }}
+                                    transition={{ duration: 0.3, ease: EASE }}
+                                >
+                                    <div className="group glass glass-hover rounded-2xl p-5 flex flex-col items-center text-center h-full">
+                                        <img
+                                            src={tech.icon}
+                                            alt={tech.name}
+                                            loading="lazy"
+                                            className="w-11 h-11 mb-3 grayscale opacity-80 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110"
                                         />
-                                        <h3 className="font-semibold text-gray-900 text-sm mb-1">{tech.name}</h3>
-                                        <span className="text-xs text-gray-500 px-2 py-1 bg-gray-50 rounded-full">{tech.category}</span>
+                                        <h3 className="font-medium text-slate-200 text-sm">{tech.name}</h3>
+                                        <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 mt-1">
+                                            {tech.category}
+                                        </span>
                                     </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    
-                    <div className="text-center mt-16 mb-20">
-                        <div className="inline-flex items-center gap-4 px-6 py-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full border border-blue-100">
-                            <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-                            <span className="font-medium text-gray-700">10+ Technologies • Full Stack Ready</span>
-                        </div>
-                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
                 </div>
 
-                {/* Technical Expertise Section */}
-                <div className="mt-16 mb-20">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                            Technical <span className="text-blue-600">Expertise</span>
+                {/* Technical Expertise */}
+                <div className="mt-28 mb-10">
+                    <Reveal className="text-center mb-14">
+                        <span className="eyebrow">Capabilities</span>
+                        <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mt-3">
+                            Technical <span className="text-gradient">Expertise</span>
                         </h2>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            Comprehensive skill set covering full-stack development and enterprise technologies.
+                        <p className="text-lg text-slate-400 mt-3 max-w-2xl mx-auto">
+                            A full-stack skill set spanning interface, services, and tooling.
                         </p>
-                    </div>
+                    </Reveal>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: 'Frontend Development',
-                                icon: <Code2 className="w-8 h-8 text-white" />,
-                                color: 'bg-pink-500',
-                                description: 'Building responsive, performant user interfaces with modern frameworks.',
-                                skills: ['Angular', 'JavaScript', 'HTML5', 'CSS3', 'Bootstrap', 'TypeScript']
-                            },
-                            {
-                                title: 'Backend Development',
-                                icon: <Database className="w-8 h-8 text-white" />,
-                                color: 'bg-blue-500',
-                                description: 'Developing robust server-side applications and microservices.',
-                                skills: ['Java', 'Spring', 'Spring Boot', 'MySQL', 'MongoDB', 'REST APIs']
-                            },
-                            {
-                                title: 'Tools & Problem Solving',
-                                icon: <Terminal className="w-8 h-8 text-white" />,
-                                color: 'bg-green-500',
-                                description: 'Development tools and algorithmic problem solving.',
-                                skills: ['Git', 'VS Code', 'Postman', 'LeetCode', 'Data Structures', 'Algorithms']
-                            }
-                        ].map((category, index) => (
-                            <div key={index} className="bg-white rounded-xl p-8 shadow-lg border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col">
-                                <div className={`${category.color} w-16 h-16 rounded-lg flex items-center justify-center mb-6 shadow-sm`}>
-                                    {React.cloneElement(category.icon, { className: 'w-10 h-10 text-white' })}
-                                </div>
-
-                                <h3 className="text-2xl font-bold text-gray-900 mb-4">{category.title}</h3>
-                                <p className="text-gray-600 mb-6 text-base">{category.description}</p>
-
-                                <div className="mt-auto">
-                                    <div className="flex flex-wrap gap-2">
-                                        {category.skills.map((skill, idx) => (
-                                            <span key={idx} className="px-2 py-1 bg-gray-50 text-gray-700 rounded-full text-xs font-medium border border-gray-100">
-                                                {skill}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <Reveal.Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {expertise.map((cat) => {
+                            const Icon = cat.icon;
+                            return (
+                                <Reveal.Item key={cat.title}>
+                                    <SpotlightCard className="group glass glass-hover rounded-2xl p-7 flex flex-col" maxTilt={5}>
+                                        <div className="w-14 h-14 rounded-2xl bg-accent/15 border border-accent/30 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
+                                            <Icon className="w-7 h-7 text-accent-soft" />
+                                        </div>
+                                        <h3 className="text-xl font-display font-bold text-white mb-2">{cat.title}</h3>
+                                        <p className="text-slate-400 text-sm mb-6">{cat.description}</p>
+                                        <div className="mt-auto flex flex-wrap gap-2">
+                                            {cat.skills.map((skill) => (
+                                                <span
+                                                    key={skill}
+                                                    className="px-2.5 py-1 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10"
+                                                >
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </SpotlightCard>
+                                </Reveal.Item>
+                            );
+                        })}
+                    </Reveal.Stagger>
                 </div>
             </div>
         </section>
