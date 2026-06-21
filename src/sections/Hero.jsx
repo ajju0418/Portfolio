@@ -9,6 +9,9 @@ import Typewriter from '../components/Typewriter';
 import SpotlightCard from '../components/SpotlightCard';
 import Counter from '../components/Counter';
 import Magnetic from '../components/Magnetic';
+import Hero3DBackground from '../components/three/Hero3DBackground';
+import DevTerminal from '../components/Terminal';
+import techStack from '../data/techStack';
 
 const roles = [
     'Software Engineer',
@@ -50,19 +53,6 @@ const imageReveal = {
     },
 };
 
-const techStack = [
-    { name: 'Angular', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg', category: 'Frontend' },
-    { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg', category: 'Frontend' },
-    { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg', category: 'Backend' },
-    { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg', category: 'Backend' },
-    { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg', category: 'Database' },
-    { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg', category: 'Tools' },
-    { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg', category: 'Database' },
-    { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg', category: 'Tools' },
-    { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg', category: 'DevOps' },
-    { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', category: 'Cloud' },
-];
-
 const expertise = [
     {
         title: 'Frontend Development',
@@ -98,6 +88,8 @@ const Hero = () => {
 
     return (
         <section id="home" className="relative pt-32 pb-10">
+            {/* WebGL ambient layer — lazy-loaded & gated; no-ops on mobile/reduced-motion */}
+            <Hero3DBackground />
             <div className="section-shell w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
@@ -220,6 +212,11 @@ const Hero = () => {
                         </motion.div>
                     </motion.div>
                 </div>
+
+                {/* Interactive terminal — types a quick dev session */}
+                <Reveal className="mt-20 max-w-2xl mx-auto">
+                    <DevTerminal />
+                </Reveal>
 
                 {/* Tech Stack */}
                 <div className="mt-28">

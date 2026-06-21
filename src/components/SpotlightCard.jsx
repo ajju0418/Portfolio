@@ -20,6 +20,7 @@ const SpotlightCard = ({
 
     const mx = useMotionValue(0.5);
     const my = useMotionValue(0.5);
+    const raf = useRef(0);
 
     const rotateX = useSpring(useTransform(my, [0, 1], [maxTilt, -maxTilt]), { stiffness: 200, damping: 22 });
     const rotateY = useSpring(useTransform(mx, [0, 1], [-maxTilt, maxTilt]), { stiffness: 200, damping: 22 });
@@ -27,18 +28,29 @@ const SpotlightCard = ({
     const handleMove = (e) => {
         const el = ref.current;
         if (!el) return;
-        const rect = el.getBoundingClientRect();
-        const px = (e.clientX - rect.left) / rect.width;
-        const py = (e.clientY - rect.top) / rect.height;
-        mx.set(px);
-        my.set(py);
-        if (enableSpot) {
-            el.style.setProperty('--mx', `${px * 100}%`);
-            el.style.setProperty('--my', `${py * 100}%`);
-        }
+        // rAF-throttle: at most one geometry read + write per frame, even if
+        // mousemove fires dozens of times between frames.
+        if (raf.current) return;
+        const { clientX, clientY } = e;
+        raf.current = requestAnimationFrame(() => {
+            raf.current = 0;
+            const rect = el.getBoundingClientRect();
+            const px = (clientX - rect.left) / rect.width;
+            const py = (clientY - rect.top) / rect.height;
+            mx.set(px);
+            my.set(py);
+            if (enableSpot) {
+                el.style.setProperty('--mx', `${px * 100}%`);
+                el.style.setProperty('--my', `${py * 100}%`);
+            }
+        });
     };
 
     const handleLeave = () => {
+        if (raf.current) {
+            cancelAnimationFrame(raf.current);
+            raf.current = 0;
+        }
         mx.set(0.5);
         my.set(0.5);
     };

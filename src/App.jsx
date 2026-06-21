@@ -1,53 +1,95 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-import Navbar from './components/Navbar';
+import { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Background3D from './components/Background3D';
+import TopBar from './components/TopBar';
+import SectionNav from './components/SectionNav';
 import ScrollProgress from './components/ScrollProgress';
-import Home from './pages/Home';
-import ExperiencePage from './pages/ExperiencePage';
-import ProjectsPage from './pages/ProjectsPage';
-import ContactPage from './pages/ContactPage';
-import Footer from './components/Footer';
+import HomeIntro from './sections/HomeIntro';
+import JourneyPanel from './sections/JourneyPanel';
+import WorkPanel from './sections/WorkPanel';
+import ContactPanel from './sections/ContactPanel';
+import { profile, sections } from './data/portfolio';
+import { registerSections, updateScroll, setPointer } from './lib/scrollStore';
 
-const AnimatedRoutes = () => {
-    const location = useLocation();
+gsap.registerPlugin(ScrollTrigger);
+
+/**
+ * Single-page immersive portfolio. A fixed full-screen 3D background sits behind
+ * everything; the content overlay scrolls over it. A GSAP ScrollTrigger drives
+ * the shared scroll store (which the 3D camera, theme blend, and dot-nav all
+ * read), and a pointer listener feeds parallax. Content reveals use ScrollReveal.
+ */
+export default function App() {
+    useEffect(() => {
+        // Register section elements so the store can compute the active section.
+        registerSections(sections.map((s) => document.getElementById(s.id)));
+        updateScroll();
+
+        // Tie the scene transitions to a global ScrollTrigger spanning the page.
+        const st = ScrollTrigger.create({
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom bottom',
+            onUpdate: updateScroll,
+            onRefresh: updateScroll,
+        });
+
+        // Pointer → parallax (normalised to -1..1), rAF-throttled.
+        let raf = 0;
+        const onMove = (e) => {
+            if (raf) return;
+            raf = requestAnimationFrame(() => {
+                raf = 0;
+                setPointer(
+                    (e.clientX / window.innerWidth) * 2 - 1,
+                    (e.clientY / window.innerHeight) * 2 - 1
+                );
+            });
+        };
+        window.addEventListener('pointermove', onMove, { passive: true });
+
+        // Recompute on resize (heights change) — debounced via ScrollTrigger refresh.
+        const onResize = () => ScrollTrigger.refresh();
+        window.addEventListener('resize', onResize);
+
+        return () => {
+            st.kill();
+            window.removeEventListener('pointermove', onMove);
+            window.removeEventListener('resize', onResize);
+            if (raf) cancelAnimationFrame(raf);
+        };
+    }, []);
+
+    const year = new Date().getFullYear();
+
+    // Wrapper is transparent: the fixed -z-10 canvas shows behind content, with
+    // the body's bg-ink-900 as the ultimate fallback colour.
     return (
-        <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/experience" element={<ExperiencePage />} />
-                <Route path="/projects" element={<ProjectsPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-        </AnimatePresence>
-    );
-};
-
-function App() {
-    const basename = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
-
-    return (
-        <Router basename={basename}>
+        <div className="relative min-h-screen overflow-x-hidden text-slate-300">
+            <Background3D />
+            {/* Darkening veil so the 3D reads as a backdrop, not a competitor */}
+            <div className="fx-backdrop" aria-hidden="true" />
             <ScrollProgress />
-            <div className="min-h-screen bg-ink-900 text-slate-300 flex flex-col relative overflow-x-hidden">
-                {/* Ambient background layers */}
-                <div className="pointer-events-none fixed inset-0 -z-10">
-                    <div className="absolute inset-0 bg-grid-faint [background-size:46px_46px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-                    <div className="absolute -top-40 right-[-10%] h-[36rem] w-[36rem] rounded-full bg-accent/20 blur-[140px] animate-float-slow" />
-                    <div className="absolute top-[40%] left-[-15%] h-[30rem] w-[30rem] rounded-full bg-accent-glow/15 blur-[150px] animate-float-slow [animation-delay:3s]" />
-                </div>
+            <TopBar />
+            <SectionNav />
 
-                <div className="relative z-10 flex flex-col min-h-screen">
-                    <Navbar />
-                    <main className="flex-grow">
-                        <AnimatedRoutes />
-                    </main>
-                    <Footer />
-                </div>
-            </div>
-        </Router>
+            <main className="overlay-root relative z-10">
+                <HomeIntro />
+                <JourneyPanel />
+                <WorkPanel />
+                <ContactPanel />
+            </main>
+
+            {/* Cinematic framing — sit above the canvas, never block clicks */}
+            <div className="fx-vignette" aria-hidden="true" />
+            <div className="fx-grain" aria-hidden="true" />
+
+            <footer className="relative z-10 border-t border-white/10 py-8 text-center">
+                <p className="text-sm text-slate-400">
+                    © {year} {profile.fullName}. Built with React, Three.js &amp; GSAP.
+                </p>
+            </footer>
+        </div>
     );
 }
-
-export default App;

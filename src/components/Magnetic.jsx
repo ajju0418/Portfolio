@@ -13,16 +13,25 @@ const Magnetic = ({ children, strength = 0.35, className = '' }) => {
     const y = useMotionValue(0);
     const sx = useSpring(x, { stiffness: 220, damping: 16 });
     const sy = useSpring(y, { stiffness: 220, damping: 16 });
+    const raf = useRef(0);
 
     const handleMove = (e) => {
         const el = ref.current;
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        x.set((e.clientX - (rect.left + rect.width / 2)) * strength);
-        y.set((e.clientY - (rect.top + rect.height / 2)) * strength);
+        if (!el || raf.current) return;
+        const { clientX, clientY } = e;
+        raf.current = requestAnimationFrame(() => {
+            raf.current = 0;
+            const rect = el.getBoundingClientRect();
+            x.set((clientX - (rect.left + rect.width / 2)) * strength);
+            y.set((clientY - (rect.top + rect.height / 2)) * strength);
+        });
     };
 
     const handleLeave = () => {
+        if (raf.current) {
+            cancelAnimationFrame(raf.current);
+            raf.current = 0;
+        }
         x.set(0);
         y.set(0);
     };

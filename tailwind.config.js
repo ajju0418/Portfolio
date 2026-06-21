@@ -8,7 +8,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['"Space Grotesk"', 'Inter', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', '"Space Grotesk"', 'Inter', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
@@ -48,11 +49,17 @@ export default {
           '0%': { transform: 'scale(0.9)', opacity: '0.7' },
           '70%, 100%': { transform: 'scale(2.2)', opacity: '0' },
         },
+        'fall-drift': {
+          '0%': { transform: 'translateY(0) translateX(0)', opacity: '0' },
+          '15%, 85%': { opacity: '0.6' },
+          '100%': { transform: 'translateY(-60px) translateX(20px)', opacity: '0' },
+        },
       },
       animation: {
         'float-slow': 'float-slow 9s ease-in-out infinite',
         shimmer: 'shimmer 2.2s infinite',
         'pulse-ring': 'pulse-ring 2.4s cubic-bezier(0.4,0,0.6,1) infinite',
+        'fall-drift': 'fall-drift 12s ease-in-out infinite',
       },
     },
   },
