@@ -1,53 +1,34 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion, useReducedMotion } from 'framer-motion';
 
 /**
- * GSAP ScrollTrigger reveal. Fades + lifts its children in as they enter the
- * viewport and reverses on the way out. No-ops under prefers-reduced-motion.
+ * Fade + lift + de-blur reveal as children enter the viewport (and reverses on
+ * the way out). Built on framer-motion's whileInView so it ships no extra
+ * dependency. No-ops under prefers-reduced-motion.
  */
+const EASE = [0.22, 1, 0.36, 1];
+
 export default function ScrollReveal({
     children,
     className = '',
     y = 28,
     delay = 0,
-    as: Tag = 'div',
+    as = 'div',
 }) {
-    const ref = useRef(null);
+    const reduce = useReducedMotion();
+    const Tag = motion[as] || motion.div;
 
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return undefined;
-        if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-            gsap.set(el, { opacity: 1, y: 0, filter: 'none' });
-            return undefined;
-        }
-        const ctx = gsap.context(() => {
-            gsap.fromTo(
-                el,
-                { opacity: 0, y, filter: 'blur(8px)' },
-                {
-                    opacity: 1,
-                    y: 0,
-                    filter: 'blur(0px)',
-                    duration: 0.9,
-                    delay,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 88%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-        }, el);
-        return () => ctx.revert();
-    }, [y, delay]);
+    if (reduce) {
+        return <Tag className={className}>{children}</Tag>;
+    }
 
     return (
-        <Tag ref={ref} className={className} style={{ opacity: 0 }}>
+        <Tag
+            className={className}
+            initial={{ opacity: 0, y, filter: 'blur(8px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: false, margin: '0px 0px -12% 0px' }}
+            transition={{ duration: 0.9, delay, ease: EASE }}
+        >
             {children}
         </Tag>
     );

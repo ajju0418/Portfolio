@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Background3D from './components/Background3D';
+import ShaderBackground from './components/ShaderBackground';
 import TopBar from './components/TopBar';
 import SectionNav from './components/SectionNav';
 import ScrollProgress from './components/ScrollProgress';
@@ -12,12 +10,10 @@ import ContactPanel from './sections/ContactPanel';
 import { profile, sections } from './data/portfolio';
 import { registerSections, updateScroll, setPointer } from './lib/scrollStore';
 
-gsap.registerPlugin(ScrollTrigger);
-
 /**
- * Single-page immersive portfolio. A fixed full-screen 3D background sits behind
- * everything; the content overlay scrolls over it. A GSAP ScrollTrigger drives
- * the shared scroll store (which the 3D camera, theme blend, and dot-nav all
+ * Single-page immersive portfolio. A fixed full-screen GLSL background sits
+ * behind everything; the content overlay scrolls over it. A scroll listener
+ * feeds the shared scroll store (which the shader's colour blend and the dot-nav
  * read), and a pointer listener feeds parallax. Content reveals use ScrollReveal.
  */
 export default function App() {
@@ -26,21 +22,26 @@ export default function App() {
         registerSections(sections.map((s) => document.getElementById(s.id)));
         updateScroll();
 
-        // Tie the scene transitions to a global ScrollTrigger spanning the page.
-        const st = ScrollTrigger.create({
-            trigger: document.body,
-            start: 'top top',
-            end: 'bottom bottom',
-            onUpdate: updateScroll,
-            onRefresh: updateScroll,
-        });
+        // Scroll/resize → recompute active section + progress, rAF-throttled.
+        let scrollRaf = 0;
+        const onScroll = () => {
+            if (scrollRaf) return;
+            scrollRaf = requestAnimationFrame(() => {
+                scrollRaf = 0;
+                updateScroll();
+            });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        // Section offsets settle once fonts/images load — recompute then.
+        window.addEventListener('load', updateScroll);
 
         // Pointer → parallax (normalised to -1..1), rAF-throttled.
-        let raf = 0;
+        let moveRaf = 0;
         const onMove = (e) => {
-            if (raf) return;
-            raf = requestAnimationFrame(() => {
-                raf = 0;
+            if (moveRaf) return;
+            moveRaf = requestAnimationFrame(() => {
+                moveRaf = 0;
                 setPointer(
                     (e.clientX / window.innerWidth) * 2 - 1,
                     (e.clientY / window.innerHeight) * 2 - 1
@@ -49,15 +50,13 @@ export default function App() {
         };
         window.addEventListener('pointermove', onMove, { passive: true });
 
-        // Recompute on resize (heights change) — debounced via ScrollTrigger refresh.
-        const onResize = () => ScrollTrigger.refresh();
-        window.addEventListener('resize', onResize);
-
         return () => {
-            st.kill();
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
+            window.removeEventListener('load', updateScroll);
             window.removeEventListener('pointermove', onMove);
-            window.removeEventListener('resize', onResize);
-            if (raf) cancelAnimationFrame(raf);
+            if (scrollRaf) cancelAnimationFrame(scrollRaf);
+            if (moveRaf) cancelAnimationFrame(moveRaf);
         };
     }, []);
 
@@ -67,8 +66,8 @@ export default function App() {
     // the body's bg-ink-900 as the ultimate fallback colour.
     return (
         <div className="relative min-h-screen overflow-x-hidden text-slate-300">
-            <Background3D />
-            {/* Darkening veil so the 3D reads as a backdrop, not a competitor */}
+            <ShaderBackground />
+            {/* Darkening veil so the background reads as a backdrop, not a competitor */}
             <div className="fx-backdrop" aria-hidden="true" />
             <ScrollProgress />
             <TopBar />
@@ -87,7 +86,7 @@ export default function App() {
 
             <footer className="relative z-10 border-t border-white/10 py-8 text-center">
                 <p className="text-sm text-slate-400">
-                    © {year} {profile.fullName}. Built with React, Three.js &amp; GSAP.
+                    © {year} {profile.fullName}. Built with React, WebGL &amp; Framer Motion.
                 </p>
             </footer>
         </div>
